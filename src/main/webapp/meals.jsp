@@ -1,3 +1,4 @@
+<%@ page import="ru.javawebinar.topjava.util.DateTimeUtil" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -14,6 +15,11 @@
         .excess {
             color: red;
         }
+        div{
+            border: 1px solid black;
+            padding: 10px;
+            width: 50%;
+        }
     </style>
 </head>
 <body>
@@ -21,6 +27,21 @@
     <h3><a href="index.html">Home</a></h3>
     <hr/>
     <h2>Meals</h2>
+    <form action="meals" method="get">
+    <div>
+        От даты(включая):
+        <input type="date" name="startDate"/>
+        До даты(включая):
+        <input type="date" name="endDate"/>
+        <br><br>
+        От времени (включая)
+        <input type="time" name="startTime"/>
+        До времени (исключая)
+        <input type="time" name="endTime"/>
+        <button type="submit">Отфильтровать</button>
+    </div>
+    </form>
+
     <a href="meals?action=create">Add Meal</a>
     <br><br>
     <table border="1" cellpadding="8" cellspacing="0">
@@ -34,7 +55,7 @@
         </tr>
         </thead>
         <c:forEach items="${meals}" var="meal">
-            <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.MealTo"/>
+            <jsp:useBean id="meal" type="ru.javawebinar.topjava.to.MealTo"/>
             <tr class="${meal.excess ? 'excess' : 'normal'}">
                 <td>
                         <%--${meal.dateTime.toLocalDate()} ${meal.dateTime.toLocalTime()}--%>
