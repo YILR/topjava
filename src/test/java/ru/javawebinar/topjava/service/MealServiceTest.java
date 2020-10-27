@@ -137,7 +137,6 @@ public class MealServiceTest {
     }
 
     @Test
-    @Ignore
     public void updateNotOwn() throws Exception {
         long startTime = System.nanoTime();
         assertThrows(NotFoundException.class, () -> service.update(meal1, ADMIN_ID));
