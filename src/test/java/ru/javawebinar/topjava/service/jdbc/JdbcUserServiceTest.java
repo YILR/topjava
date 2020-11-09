@@ -3,10 +3,10 @@ package ru.javawebinar.topjava.service.jdbc;
 import org.junit.AfterClass;
 import org.springframework.test.context.ActiveProfiles;
 import ru.javawebinar.topjava.Profiles;
-import ru.javawebinar.topjava.service.UserServiceTest;
+import ru.javawebinar.topjava.service.AbstractUserServiceTest;
 
-@ActiveProfiles({Profiles.POSTGRES_DB, Profiles.JDBC})
-public class JdbcUserServiceTest extends UserServiceTest {
+@ActiveProfiles(Profiles.JDBC)
+public class JdbcUserServiceTest extends AbstractUserServiceTest {
 
     @AfterClass
     public static void printResult() {

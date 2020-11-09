@@ -3,10 +3,10 @@ package ru.javawebinar.topjava.service.datajpa;
 import org.junit.AfterClass;
 import org.springframework.test.context.ActiveProfiles;
 import ru.javawebinar.topjava.Profiles;
-import ru.javawebinar.topjava.service.UserServiceTest;
+import ru.javawebinar.topjava.service.AbstractUserServiceTest;
 
-@ActiveProfiles({Profiles.POSTGRES_DB, Profiles.DATAJPA})
-public class DataJpaUserServiceTest extends UserServiceTest {
+@ActiveProfiles(Profiles.DATAJPA)
+public class DataJpaUserServiceTest extends AbstractUserServiceTest {
 
     @AfterClass
     public static void printResult() {
