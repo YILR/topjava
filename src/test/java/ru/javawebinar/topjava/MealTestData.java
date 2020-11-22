@@ -1,16 +1,26 @@
 package ru.javawebinar.topjava;
 
 import ru.javawebinar.topjava.model.Meal;
+import ru.javawebinar.topjava.to.MealTo;
+import ru.javawebinar.topjava.util.MealsUtil;
+import ru.javawebinar.topjava.util.Util;
+import ru.javawebinar.topjava.web.SecurityUtil;
 
+import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.time.LocalDateTime.of;
 import static ru.javawebinar.topjava.model.AbstractBaseEntity.START_SEQ;
+import static ru.javawebinar.topjava.util.DateTimeUtil.atStartOfDayOrMin;
+import static ru.javawebinar.topjava.util.DateTimeUtil.atStartOfNextDayOrMax;
 
 public class MealTestData {
     public static final TestMatcher<Meal> MEAL_MATCHER = TestMatcher.usingIgnoringFieldsComparator(Meal.class, "user");
+
+    public static final TestMatcher<MealTo> MEAL_TO_MATCHER = TestMatcher.usingIgnoringFieldsComparator(MealTo.class, "user");
 
     public static final int NOT_FOUND = 10;
     public static final int MEAL1_ID = START_SEQ + 2;
@@ -34,5 +44,17 @@ public class MealTestData {
 
     public static Meal getUpdated() {
         return new Meal(MEAL1_ID, meal1.getDateTime().plus(2, ChronoUnit.MINUTES), "Обновленный завтрак", 200);
+    }
+
+    public static final List<MealTo> mealsTo = MealsUtil.getTos(meals, SecurityUtil.authUserCaloriesPerDay());
+
+    public static final LocalDateTime START_LOCAL_DATE_TIME = LocalDateTime.of(2020, Month.JANUARY, 30, 7, 0);
+    public static final LocalDateTime END_LOCAL_DATE_TIME = LocalDateTime.of(2020, Month.JANUARY, 31, 14, 0);
+
+    public static final List<MealTo> getBetweenMealsTo() {
+        List<Meal> collect = meals.stream()
+                .filter(meal -> Util.isBetweenHalfOpen(meal.getDateTime(), atStartOfDayOrMin(START_LOCAL_DATE_TIME.toLocalDate()), atStartOfNextDayOrMax(END_LOCAL_DATE_TIME.toLocalDate())))
+                .collect(Collectors.toList());
+        return MealsUtil.getFilteredTos(collect, SecurityUtil.authUserCaloriesPerDay(), START_LOCAL_DATE_TIME.toLocalTime(), END_LOCAL_DATE_TIME.toLocalTime());
     }
 }
