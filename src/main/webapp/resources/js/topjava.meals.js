@@ -2,7 +2,7 @@ var meal;
 
 $(function () {
     meal = {
-        ajaxUrl: "meals",
+        ajaxUrl: "meals/",
         datatableApi: $("#datatable").DataTable({
             "paging": false,
             "info": true,

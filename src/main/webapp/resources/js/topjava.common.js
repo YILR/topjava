@@ -1,6 +1,7 @@
 var form;
-
-function makeEditable() {
+var ajaxUrl;
+function makeEditable(ajaxUrl) {
+    this.ajaxUrl = ajaxUrl;
     form = $('#detailsForm');
     $(".delete").click(function () {
         if (confirm('Are you sure?')) {
@@ -17,13 +18,13 @@ function makeEditable() {
 }
 
 function add() {
-    form.find(":input").val("");
+
     $("#editRow").modal();
 }
 
 function deleteRow(id) {
     $.ajax({
-        url: ctx.ajaxUrl + id,
+        url: ajaxUrl + id,
         type: "DELETE"
     }).done(function () {
         updateTable();
@@ -32,15 +33,15 @@ function deleteRow(id) {
 }
 
 function updateTable() {
-    $.get(ctx.ajaxUrl, function (data) {
-        ctx.datatableApi.clear().rows.add(data).draw();
+    $.get(ajaxUrl, function (data) {
+        ajaxUrl.datatableApi.clear().rows.add(data).draw();
     });
 }
 
 function save() {
     $.ajax({
         type: "POST",
-        url: ctx.ajaxUrl,
+        url: ajaxUrl,
         data: form.serialize()
     }).done(function () {
         $("#editRow").modal("hide");
