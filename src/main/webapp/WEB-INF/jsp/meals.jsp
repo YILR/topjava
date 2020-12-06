@@ -36,20 +36,20 @@
                     </div>
 
                 </div>
-                <div class="card-footer text-right">
-                    <button type="button" class="btn badge-danger">
-                        <span class="fa fa-times"></span>
-                        <spring:message code="common.cancel"/>
-                    </button>
-                    <button type="submit" class="btn btn-primary">
-                        <span class="fa fa-filter"></span>
-                        <spring:message code="meal.filter"/>
-                    </button>
-                </div>
             </form>
+            <div class="card-footer text-right">
+                <button class="btn badge-danger" onclick="clearFilter()">
+                    <span class="fa fa-times"></span>
+                    <spring:message code="common.cancel"/>
+                </button>
+                <button class="btn btn-primary" onclick="filter()">
+                    <span class="fa fa-filter"></span>
+                    <spring:message code="meal.filter"/>
+                </button>
+            </div>
         </div>
         <br>
-        <button class="btn btn-primary" onclick="add()">
+        <button class="btn btn-primary" onclick="addMeal()">
             <span class="fa fa-plus"></span>
             <spring:message code="common.add"/>
         </button>
@@ -75,8 +75,8 @@
                     </td>
                     <td>${meal.description}</td>
                     <td>${meal.calories}</td>
-                    <td><a href="meals/update?id=${meal.id}"><span class="fa fa-pencil"></span></a></td>
-                    <td><a href="meals/delete?id=${meal.id}"><span class="fa fa-remove"></span></a></td>
+                    <td><a href="/meals/update?id=${meal.id}"><span class="fa fa-pencil"></span></a></td>
+                    <td><a onclick="deleteRow(meal, ${meal.id})"><span class="fa fa-remove"></span></a></td>
                 </tr>
             </c:forEach>
         </table>
@@ -96,7 +96,7 @@
 
                     <div class="form-group">
                         <label for="dateTime" class="col-form-label"><spring:message code="meal.dateTime"/></label>
-                        <input type="text" class="form-control" id="dateTime" name="dateTime"
+                        <input type="datetime-local" class="form-control" id="dateTime" name="dateTime"
                                placeholder="<spring:message code="meal.dateTime"/>">
                     </div>
 
@@ -109,7 +109,7 @@
                     <div class="form-group">
                         <label for="calories" class="col-form-label"><spring:message code="meal.calories"/></label>
                         <input type="number" class="form-control" id="calories" name="calories"
-                               placeholder="<spring:message code="meal.calories"/>">
+                               placeholder="1000">
                     </div>
                 </form>
             </div>
@@ -118,7 +118,7 @@
                     <span class="fa fa-close"></span>
                     <spring:message code="common.cancel"/>
                 </button>
-                <button type="button" class="btn btn-primary" onclick="save()">
+                <button type="button" class="btn btn-primary" onclick="save(meal)">
                     <span class="fa fa-check"></span>
                     <spring:message code="common.save"/>
                 </button>

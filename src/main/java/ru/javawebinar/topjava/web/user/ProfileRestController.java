@@ -5,6 +5,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.javawebinar.topjava.model.User;
 
+import java.util.List;
+
 import static ru.javawebinar.topjava.web.SecurityUtil.authUserId;
 
 @RestController

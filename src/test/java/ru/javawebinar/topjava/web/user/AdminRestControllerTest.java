@@ -85,4 +85,18 @@ class AdminRestControllerTest extends AbstractControllerTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(USER_MATCHER.contentJson(admin, user));
     }
+
+    @Test
+    void enable() throws Exception {
+        User enable = new User(user);
+        enable.setEnabled(true);
+        perform(MockMvcRequestBuilders.post(REST_URL + USER_ID)
+                .param("enabled", String.valueOf(true)))
+                .andExpect(status().isNoContent())
+                .andDo(print());
+
+        USER_MATCHER.assertMatch(userService.get(USER_ID), enable);
+
+
+    }
 }

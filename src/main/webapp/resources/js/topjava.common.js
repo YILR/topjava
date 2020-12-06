@@ -1,13 +1,8 @@
 var form;
-var ajaxUrl;
-function makeEditable(ajaxUrl) {
-    this.ajaxUrl = ajaxUrl;
+
+function makeEditable() {
+
     form = $('#detailsForm');
-    $(".delete").click(function () {
-        if (confirm('Are you sure?')) {
-            deleteRow($(this).attr("id"));
-        }
-    });
 
     $(document).ajaxError(function (event, jqXHR, options, jsExc) {
         failNoty(jqXHR);
@@ -18,34 +13,40 @@ function makeEditable(ajaxUrl) {
 }
 
 function add() {
-
+    form.find(":input").val("");
     $("#editRow").modal();
 }
 
-function deleteRow(id) {
-    $.ajax({
-        url: ajaxUrl + id,
-        type: "DELETE"
-    }).done(function () {
-        updateTable();
-        successNoty("Deleted");
+function addMeal() {
+    $("#editRow").modal();
+}
+
+function deleteRow(ctx, id) {
+    if (confirm('Are you sure?')) {
+        $.ajax({
+            url: ctx.ajaxUrl + id,
+            type: "DELETE"
+        }).done(function () {
+            updateTable(ctx);
+            successNoty("Deleted");
+        });
+    }
+}
+
+function updateTable(ctx) {
+    $.get(ctx.ajaxUrl, function (data) {
+        ctx.datatableApi.clear().rows.add(data).draw();
     });
 }
 
-function updateTable() {
-    $.get(ajaxUrl, function (data) {
-        ajaxUrl.datatableApi.clear().rows.add(data).draw();
-    });
-}
-
-function save() {
+function save(ctx) {
     $.ajax({
         type: "POST",
-        url: ajaxUrl,
+        url: ctx.ajaxUrl,
         data: form.serialize()
     }).done(function () {
         $("#editRow").modal("hide");
-        updateTable();
+        updateTable(ctx);
         successNoty("Saved");
     });
 }
